@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import Header from './components/Header.vue'
+import Layout from './components/Layout.vue'
 import HelloAuthor from './components/HelloAuthor.vue'
 import View from './components/View.vue'
 
@@ -13,11 +13,11 @@ const router = createRouter({
       component: HelloAuthor,
     },
     {
-      path: '/header',
-      component: Header,
+      path: '/layout',
+      component: Layout,
     },
     {
-      path: '/header/view',
+      path: '/layout/view',
       component: View,
     },
   ],

@@ -1,9 +1,12 @@
 <template>
-  <nav>
+  <nav v-if="isReady">
     <ul>
-      <li v-for="(tab, index) in tabs" @click="changeTab(index)">{{ tab }}</li>
+      <li v-for="(tab, index) in tabs" @click="changeTab(index)">
+        {{ tab }}
+      </li>
     </ul>
   </nav>
+  <nav v-else>Loading...</nav>
 </template>
 
 <script setup>
@@ -11,7 +14,9 @@ import { Streamlit } from 'streamlit-component-lib'
 import { ref, computed, onMounted } from 'vue'
 
 const tabs = ref([])
+const isReady = ref(false)
 const selectedIndex = ref(0)
+const views = ref([])
 
 const changeTab = index => {
   selectedIndex.value = index
@@ -20,7 +25,12 @@ const changeTab = index => {
 
 const onRender = event => {
   const data = event.detail
-  tabs.value = data.args['tabs']
+  const _tabs = data.args['views']
+
+  if (_tabs[_tabs.length - 1] != null) {
+    tabs.value = _tabs
+    isReady.value = true
+  }
 
   Streamlit.setFrameHeight()
 }
