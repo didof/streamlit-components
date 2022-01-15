@@ -1,6 +1,5 @@
 import os
 import streamlit.components.v1 as components
-import types
 
 _RELEASE = False
 
@@ -12,8 +11,14 @@ config = {
 }
 
 
+class dotdict(dict):
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+
 def retrieve_components(base_url, config):
-    res = []
+    output = {}
 
     def make(component):
         def exec(**kwargs):
@@ -27,9 +32,9 @@ def retrieve_components(base_url, config):
             url=base_url + path,
         )
 
-        res.append(make(component))
+        output[name] = make(component)
 
-    return res
+    return dotdict(output)
 
 
 if not _RELEASE:
@@ -51,17 +56,9 @@ else:
 if not _RELEASE:
     import streamlit as st
 
-    hello_author = c[0]
-    header = c[1]
-
-    hello_author()
+    c.hello_author()
 
     tabs = ["home", "about"]
 
-    selected_tab = header(tabs=tabs, default=tabs[0])
+    selected_tab = c.header(tabs=tabs, default=tabs[0])
     st.write(selected_tab)
-
-    # didof_hello_author()
-
-    # selected_tab = didof_header(tabs=["home", "about"])
-    # st.write(selected_tab)
