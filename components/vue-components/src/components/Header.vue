@@ -1,9 +1,5 @@
 <template>
-  <nav
-    :style="{
-      height: `${heightRem}rem`,
-    }"
-  >
+  <nav>
     <ul>
       <li v-for="(tab, index) in tabs" @click="changeTab(index)">{{ tab }}</li>
     </ul>
@@ -17,8 +13,6 @@ import { ref, computed, onMounted } from 'vue'
 const tabs = ref([])
 const selectedIndex = ref(0)
 
-const heightRem = ref(3)
-
 const changeTab = index => {
   selectedIndex.value = index
   Streamlit.setComponentValue(tabs.value[selectedIndex.value])
@@ -27,7 +21,6 @@ const changeTab = index => {
 const onRender = event => {
   const data = event.detail
   tabs.value = data.args['tabs']
-  heightRem.value = data.args['height']
 
   Streamlit.setFrameHeight()
 }
@@ -49,6 +42,7 @@ onMounted(() => {
 <style scoped>
 nav {
   width: 100%;
+  height: 3rem;
 }
 
 ul {
